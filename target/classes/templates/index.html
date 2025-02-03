@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Notice Board</title>
+</head>
+<body>
+<h1>Notice Board</h1>
+<p th:if="${bienvenida}" th:text="${bienvenida}"></p>
+<ul>
+    <li th:each="anuncio, iterStat : ${anuncios}">
+        <a th:href="@{/anuncio/{index}(index=${iterStat.index})}"
+           th:text="${anuncio.nombre} + ' -- ' + ${anuncio.asunto}"></a>
+    </li>
+</ul>
+<a href="/nuevo">Añadir nuevo anuncio</a>
+</body>
+</html>

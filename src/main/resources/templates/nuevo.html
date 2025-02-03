@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Anuncio</title>
+</head>
+<body>
+<h1>Nuevo Anuncio</h1>
+<form action="/nuevo" method="post">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" th:value="${nombre}" required><br>
+    <label for="asunto">Asunto:</label>
+    <input type="text" id="asunto" name="asunto" required><br>
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" name="descripcion" required></textarea><br>
+    <button type="submit">Crear</button>
+</form>
+</body>
+</html>
+
