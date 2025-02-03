@@ -1,23 +1,30 @@
-# Stage 1: Build the application
-FROM maven:3.8.5-openjdk-23 AS builder
-# Set the working directory
+# Etapa 1: Build (Compilación)
+FROM maven:3.8.5-eclipse-temurin-17 AS builder
 WORKDIR /app
-# Copy the application code
+
+# Copiar solo archivos esenciales para optimizar la caché de Docker
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Ahora copiamos el resto del código fuente
 COPY . .
-# Given permissions to mvnw
-RUN chmod +x mvnw
-# Build the application (requires Maven or Gradle)
+
+# Construir la aplicación (sin ejecutar tests)
 RUN mvn clean package -DskipTests
-# Stage 2: Run the application
-FROM maven:3.8.5-openjdk-23
-# Set the working directory
+
+# Etapa 2: Runtime (Ejecución)
+FROM eclipse-temurin:17
 WORKDIR /app
-# Copy the JAR file from the builder stage
+
+# Copiar el JAR desde el builder
 COPY --from=builder /app/target/*.jar app.jar
-# Expose the port the app will run on
+
+# Exponer el puerto de la aplicación
 EXPOSE 8080
-# Command to run the application
+
+# Ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
 #docker build -t nombredelaimagen .
 #docker run -d -p 8080:8080 nombredelaimagen .
