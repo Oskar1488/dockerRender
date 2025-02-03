@@ -1,5 +1,5 @@
 # Etapa 1: Build (Compilación)
-FROM maven:3.8.5-eclipse-temurin-17 AS builder
+FROM maven:3.8.5-eclipse-temurin-23 AS builder
 WORKDIR /app
 
 # Copiar solo archivos esenciales para optimizar la caché de Docker
@@ -13,7 +13,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Runtime (Ejecución)
-FROM eclipse-temurin:17
+FROM eclipse-temurin:23
 WORKDIR /app
 
 # Copiar el JAR desde el builder
