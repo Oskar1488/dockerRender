@@ -1,28 +1,21 @@
 # Etapa 1: Build (Compilación)
-FROM eclipse-temurin:23-jdk AS builder
+FROM maven:3.9.6-eclipse-temurin-23 AS builder
 WORKDIR /app
-
-# Copiar solo archivos esenciales para optimizar la caché de Docker
-COPY pom.xml .
-RUN mvn dependency:go-offline
-
-# Ahora copiamos el resto del código fuente
 COPY . .
-
-# Construir la aplicación (sin ejecutar tests)
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Runtime (Ejecución)
-FROM eclipse-temurin:23-jdk AS builder
+FROM eclipse-temurin:23-jre
 WORKDIR /app
 
-# Copiar el JAR desde el builder
+# Copiar solo el JAR generado en la etapa de compilación
 COPY --from=builder /app/target/*.jar app.jar
 
-# Exponer el puerto de la aplicación
+# Exponer el puerto 8080
 EXPOSE 8080
 
 # Ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
 
